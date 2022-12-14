@@ -1,0 +1,26 @@
+# 
+# docker-compose.nginx.yml
+# ----------------
+# by Griffon Development Co., Ltd
+#
+# 將各個services集中在此檔案，此檔案管理nginx相關services
+
+version: '3.7'
+
+services:
+    nginx:
+        build: ./nginx
+        container_name: django_tutorial-nginx
+        volumes:
+            - django_tutorial_static_volume:/src/staticfiles
+            - django_tutorial_media_volume:/src/mediafiles
+        ports:
+            # docker內部的80 port指向外部的8005 port，
+            # 因nginx server_name設定localhost，所以外部可透過localhost:8005進入web app
+            - "8005:80" 
+        depends_on:
+            - web
+
+volumes:
+  django_tutorial_static_volume:
+  django_tutorial_media_volume:

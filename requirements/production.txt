@@ -1,0 +1,8 @@
+# 
+# production.txt
+# ----------------
+# by Griffon Development Co., Ltd
+#
+# Dependency list in the production environment
+
+gunicorn==20.1.0

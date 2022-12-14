@@ -1,0 +1,33 @@
+/* 
+    loadSalary.css
+    --------------
+
+    美化loadSalary.js產出的dom
+*/
+
+.loadSalary {
+    height: 90vh;
+    display: flex;
+}
+
+.loadSalary-panel {
+    width: 40vw;
+    min-width: 300px;
+    height: 60vh;
+    margin: 20px auto auto auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.loadSalary-form {
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.loadSalary-data {
+    width: 70%;
+    margin: 20px auto auto auto;
+}

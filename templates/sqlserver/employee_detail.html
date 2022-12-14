@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+{{ block.super }}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" rel="stylesheet">
+<link href="{% static 'css/loadSalary.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block content %}
+<div class="loadSalary">
+
+    <div class="loadSalary-panel">
+        
+        <form class="loadSalary-form" action="{% url 'sqlserver:employee_detail' %}">
+            <ul class="list-group">
+                <li class="list-group-item">姓名 (Name): {{ employee_data.name }}</li>
+                <li class="list-group-item">代號 (ID): {{ employee_data.employee_id }}</li>
+                <li class="list-group-item">到職日 (Arrival Date): {{ employee_data.start_date }}</li>
+                <li class="list-group-item">計薪方式 (Salary Type): {{ employee_data.salary_type_name }}</li>
+                <li class="list-group-item">薪資 (Salary): {{ employee_data.base_salary }}</li>
+            </ul>
+    
+            <select name="employee_id" id="employeeSelected">
+                <option value="">-----</option>
+                <option value="EM001" {% if employee_id == 'EM001' %}selected{% endif %}>王大明</option>
+            </select>
+            
+            <input id="form_submit" type="submit" style="display: none;">
+        </form>
+
+        <select name="month" id='monthSelected'>
+            <option value="all">全部</option>
+            <option value="201908">201908</option>
+            <option value="201909">201909</option>
+            <option value="201910">201910</option>
+            <option value="201911">201911</option>
+            <option value="201912">201912</option>
+        </select>
+        
+        <button id="loadSalary-btn">Load Salary</button>
+
+    </div>
+
+    <div class="loadSalary-data" id="salaryContainer"></div>
+    
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+<script src="{% static 'js/loadSalary.js' %}"></script>
+<script src="{% static 'js/userOnChange.js' %}"></script>
+
+{% endblock javascript %}

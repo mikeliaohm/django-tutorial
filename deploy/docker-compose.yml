@@ -1,0 +1,46 @@
+# 
+# docker-compose.yml
+# ----------------
+# by Griffon Development Co., Ltd
+#
+# 將各個services集中在此檔案，此檔案管理django web相關services
+
+version: '3.7'
+
+services:
+        web:
+            build:
+                context: ../
+                dockerfile: ./deploy/app/Dockerfile
+            container_name: django_tutorial-django
+            command: >
+                bash -c "python3 manage.py migrate && \
+                        python3 manage.py collectstatic --noinput && \
+                        python3 manage.py check && \
+                        gunicorn django_tutorial.wsgi \
+                          --bind 0.0.0.0:8005 \
+                          --error-logfile ./gunicorn_error_log \
+                          --access-logfile ./gunicorn_access_log"
+            environment:
+                - READ_DOT_ENV_FILE=${READ_DOT_ENV_FILE}
+                - DATABASE_URL=${DATABASE_URL}
+                - MSSQL_HOST=${MSSQL_HOST}                
+                - MSSQL_NAME=${MSSQL_NAME}                
+                - MSSQL_USERNAME=${MSSQL_USERNAME}                
+                - MSSQL_PASSWORD=${MSSQL_PASSWORD}                  
+                - TEST_MSSQL_HOST=${TEST_MSSQL_HOST}                
+                - TEST_MSSQL_NAME=${TEST_MSSQL_NAME}                
+                - TEST_MSSQL_USERNAME=${TEST_MSSQL_USERNAME}                
+                - TEST_MSSQL_PASSWORD=${TEST_MSSQL_PASSWORD}                
+            depends_on:
+                - db
+            volumes:
+                - ../:/src
+                - django_tutorial_static_volume:/src/staticfiles
+                - django_tutorial_media_volume:/src/mediafiles
+            expose:
+                - "8005"
+            restart: always
+volumes:
+  django_tutorial_static_volume:
+  django_tutorial_media_volume:

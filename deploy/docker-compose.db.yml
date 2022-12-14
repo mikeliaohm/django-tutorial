@@ -1,0 +1,51 @@
+# 
+# docker-compose.db.yml
+# ----------------
+# by Griffon Development Co., Ltd
+#
+# 將各個services集中在此檔案，此檔案管理db相關services
+
+version: '3.7'
+
+services:
+        db:
+            image: postgres:10.5-alpine
+            container_name: django_tutorial-postgres
+            volumes:
+                - django_tutorial_postgres_data:/var/lib/postgresql/data/
+            environment:
+                - POSTGRES_DB=${POSTGRES_DB}
+                - POSTGRES_USER=${POSTGRES_USER}
+                - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            ports:
+                - "5433:5432"
+                
+        mssqldb:
+            build:
+                context: ../
+                dockerfile: ./deploy/db/Dockerfile
+                args: 
+                    - SA_PASSWORD=${MSSQL_PASSWORD}
+                    - ACCEPT_EULA=Y
+            container_name: django_tutorial-mssql
+            environment:
+                - SA_PASSWORD=${MSSQL_PASSWORD}
+                - ACCEPT_EULA=Y
+            volumes:
+                - django_tutorial_mssql_data:/var/lib/mssqlql/data
+            ports:
+                - "1433:1433"
+            
+        # mssqldb為django testing時使用的db
+        mssqldbtest:
+            image: mcr.microsoft.com/mssql/server:2017-latest
+            container_name: django_tutorial-mssql-test
+            environment:
+                - SA_PASSWORD=${TEST_MSSQL_PASSWORD}
+                - ACCEPT_EULA=Y
+            expose:
+                - '1433'
+
+volumes:
+  django_tutorial_postgres_data:
+  django_tutorial_mssql_data:
